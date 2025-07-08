@@ -222,6 +222,8 @@
             text-align: center;
             flex-shrink: 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         .theme-button:hover {
@@ -296,6 +298,8 @@
             margin: 6px;
             min-width: 160px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         button:hover {
@@ -368,6 +372,8 @@
             user-select: none;
             position: relative;
             display: inline-block;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         .counter:hover {
@@ -747,6 +753,12 @@
                 // Manual counting - click/tap
                 this.counter.addEventListener('click', () => this.manualCount());
                 
+                // Add touch events for better mobile support
+                this.counter.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.manualCount();
+                }, { passive: false });
+                
                 // Manual counting - swipe (touch devices)
                 this.setupSwipeGestures();
             }
@@ -855,7 +867,9 @@
             setupThemeSelector() {
                 const themeButtons = document.querySelectorAll('.theme-button');
                 themeButtons.forEach(button => {
+                    // Add both click and touch events for better mobile compatibility
                     button.addEventListener('click', (e) => {
+                        e.preventDefault();
                         const theme = e.target.getAttribute('data-theme');
                         this.changeTheme(theme);
                         
@@ -863,6 +877,16 @@
                         themeButtons.forEach(btn => btn.classList.remove('active'));
                         e.target.classList.add('active');
                     });
+                    
+                    button.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        const theme = e.target.getAttribute('data-theme');
+                        this.changeTheme(theme);
+                        
+                        // Update active button
+                        themeButtons.forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+                    }, { passive: false });
                 });
             }
             
@@ -1235,8 +1259,12 @@
         document.addEventListener('touchend', (e) => {
             if (e.target.tagName === 'BUTTON') {
                 e.preventDefault();
+                // Manually trigger click for better mobile compatibility
+                setTimeout(() => {
+                    e.target.click();
+                }, 0);
             }
-        });
+        }, { passive: false });
     </script>
 </body>
 </html>
