@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Misbaha - Dhikr Counter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap');
+        
+        :root {
+            /* Masjid Nabawi Theme (Default) */
+            --bg-gradient: linear-gradient(135deg, #2c5530 0%, #1a4d3a 50%, #0d3d2a 100%);
+            --container-bg: linear-gradient(145deg, #f8f6f0 0%, #ffffff 100%);
+            --primary-color: #2c5530;
+            --secondary-color: #1a4d3a;
+            --accent-color: #d4af37;
+            --text-color: #2c5530;
+            --button-gradient: linear-gradient(45deg, #2c5530, #1a4d3a);
+            --button-hover: linear-gradient(45deg, #1a4d3a, #0d3d2a);
+            --recording-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --counter-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-active: linear-gradient(45deg, #2c5530, #1a4d3a);
+            --border-color: #d4af37;
+            --shadow-color: rgba(44, 85, 48, 0.3);
+        }
+        
+        /* Classic Masjid Theme */
+        .theme-classic-masjid {
+            --bg-gradient: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%);
+            --container-bg: linear-gradient(145deg, #f8fafc 0%, #ffffff 100%);
+            --primary-color: #1e3a8a;
+            --secondary-color: #1e40af;
+            --accent-color: #c0c0c0;
+            --text-color: #1e3a8a;
+            --button-gradient: linear-gradient(45deg, #1e3a8a, #1e40af);
+            --button-hover: linear-gradient(45deg, #1e40af, #1d4ed8);
+            --recording-gradient: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+            --counter-gradient: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+            --bead-gradient: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+            --bead-active: linear-gradient(45deg, #1e3a8a, #1e40af);
+            --border-color: #c0c0c0;
+            --shadow-color: rgba(30, 58, 138, 0.3);
+        }
+        
+        /* Kaaba Theme */
+        .theme-kaaba {
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #333333 100%);
+            --container-bg: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+            --primary-color: #d4af37;
+            --secondary-color: #b8941f;
+            --accent-color: #d4af37;
+            --text-color: #d4af37;
+            --button-gradient: linear-gradient(45deg, #000000, #1a1a1a);
+            --button-hover: linear-gradient(45deg, #1a1a1a, #333333);
+            --recording-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --counter-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-active: linear-gradient(45deg, #ffffff, #f0f0f0);
+            --border-color: #d4af37;
+            --shadow-color: rgba(212, 175, 55, 0.3);
+        }
+        
+        /* Sunset Prayer Theme */
+        .theme-sunset {
+            --bg-gradient: linear-gradient(135deg, #ea580c 0%, #dc2626 50%, #7c2d12 100%);
+            --container-bg: linear-gradient(145deg, #fef3c7 0%, #fbbf24 100%);
+            --primary-color: #7c2d12;
+            --secondary-color: #dc2626;
+            --accent-color: #f59e0b;
+            --text-color: #7c2d12;
+            --button-gradient: linear-gradient(45deg, #ea580c, #dc2626);
+            --button-hover: linear-gradient(45deg, #dc2626, #7c2d12);
+            --recording-gradient: linear-gradient(45deg, #f59e0b, #d97706);
+            --counter-gradient: linear-gradient(45deg, #f59e0b, #d97706);
+            --bead-gradient: linear-gradient(45deg, #f59e0b, #d97706);
+            --bead-active: linear-gradient(45deg, #7c2d12, #dc2626);
+            --border-color: #f59e0b;
+            --shadow-color: rgba(234, 88, 12, 0.3);
+        }
+        
+        /* Minimalist White Theme */
+        .theme-minimalist {
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            --container-bg: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            --primary-color: #374151;
+            --secondary-color: #4b5563;
+            --accent-color: #d4af37;
+            --text-color: #374151;
+            --button-gradient: linear-gradient(45deg, #374151, #4b5563);
+            --button-hover: linear-gradient(45deg, #4b5563, #6b7280);
+            --recording-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --counter-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-gradient: linear-gradient(45deg, #d4af37, #b8941f);
+            --bead-active: linear-gradient(45deg, #374151, #4b5563);
+            --border-color: #d4af37;
+            --shadow-color: rgba(55, 65, 81, 0.3);
+        }
+        
+        /* Night Mode Theme */
+        .theme-night {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            --container-bg: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            --primary-color: #60a5fa;
+            --secondary-color: #3b82f6;
+            --accent-color: #fbbf24;
+            --text-color: #60a5fa;
+            --button-gradient: linear-gradient(45deg, #0f172a, #1e293b);
+            --button-hover: linear-gradient(45deg, #1e293b, #334155);
+            --recording-gradient: linear-gradient(45deg, #fbbf24, #f59e0b);
+            --counter-gradient: linear-gradient(45deg, #fbbf24, #f59e0b);
+            --bead-gradient: linear-gradient(45deg, #fbbf24, #f59e0b);
+            --bead-active: linear-gradient(45deg, #60a5fa, #3b82f6);
+            --border-color: #fbbf24;
+            --shadow-color: rgba(96, 165, 250, 0.3);
+        }
+        
+        body {
+            font-family: 'Amiri', serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="islamic" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23islamic)"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 8px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-button {
+            background: var(--button-gradient);
+            color: white;
+            border: 2px solid var(--border-color);
+            padding: 0;
+            font-size: 16px;
+            font-family: 'Amiri', serif;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            max-width: 40px;
+            max-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .theme-button:hover {
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .theme-button.active {
+            background: var(--recording-gradient);
+            border-color: var(--primary-color);
+            transform: scale(1.15);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+        }
+        
+        .container {
+            background: var(--container-bg);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+            padding: 40px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            position: relative;
+            transition: all 0.5s ease;
+        }
+        
+        .container::before {
+            content: '﷽';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--container-bg);
+            padding: 5px 20px;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            font-family: 'Scheherazade New', serif;
+            transition: all 0.5s ease;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-family: 'Scheherazade New', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            direction: rtl;
+            text-align: center;
+            transition: color 0.5s ease;
+        }
+        
+        .phase {
+            margin-bottom: 30px;
+            direction: rtl;
+            text-align: center;
+        }
+        
+        .phase h2 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-family: 'Scheherazade New', serif;
+            direction: rtl;
+            text-align: center;
+            transition: color 0.5s ease;
+        }
+        
+        .phase p {
+            direction: rtl;
+            text-align: center;
+            color: var(--text-color);
+            transition: color 0.5s ease;
+        }
+        
+        .learn-phase {
+            display: block;
+        }
+        
+        .count-phase {
+            display: none;
+        }
+        
+        button {
+            background: var(--button-gradient);
+            color: white;
+            border: 2px solid var(--border-color);
+            padding: 15px 30px;
+            font-size: 16px;
+            font-family: 'Amiri', serif;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            min-width: 200px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+            background: var(--button-hover);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            border-color: #999;
+        }
+        
+        .recording {
+            background: var(--recording-gradient) !important;
+            border-color: var(--primary-color) !important;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-family: 'Amiri', serif;
+            border: 1px solid;
+            transition: all 0.5s ease;
+        }
+        
+        .status.success {
+            background: linear-gradient(145deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        
+        .status.error {
+            background: linear-gradient(145deg, #f8d7da, #f1b0b7);
+            color: #721c24;
+            border-color: #f1b0b7;
+        }
+        
+        .status.info {
+            background: linear-gradient(145deg, #e8f4f8, #bee5eb);
+            color: #0c5460;
+            border-color: #bee5eb;
+        }
+        
+        .counter {
+            font-size: 5em;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 20px 0;
+            font-family: 'Scheherazade New', serif;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            background: var(--counter-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: transform 0.3s ease, color 0.5s ease;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .counter:hover {
+            transform: scale(1.05);
+        }
+        
+        .counter.manual-count {
+            animation: manualCountPulse 0.3s ease;
+        }
+        
+        @keyframes manualCountPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: particleFloat 2s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(0);
+            }
+        }
+        
+        .manual-counter-hint {
+            font-size: 0.9em;
+            color: var(--text-color);
+            margin: 10px 0;
+            font-style: italic;
+            opacity: 0.7;
+            transition: all 0.5s ease;
+        }
+        
+        .learned-phrase {
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid var(--border-color);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            direction: rtl;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        
+        .learned-phrase h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-family: 'Scheherazade New', serif;
+            direction: rtl;
+            text-align: center;
+            transition: color 0.5s ease;
+        }
+        
+        .phrase-text {
+            font-size: 1.5em;
+            color: var(--secondary-color);
+            font-weight: bold;
+            direction: rtl;
+            text-align: center;
+            font-family: 'Scheherazade New', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            line-height: 1.6;
+            transition: color 0.5s ease;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(45deg, #8b4513, #a0522d);
+            font-size: 14px;
+            padding: 10px 20px;
+            min-width: 120px;
+            border-color: var(--border-color);
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(45deg, #a0522d, #8b4513);
+        }
+        
+        .misbaha-beads {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .bead {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bead-gradient);
+            margin: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .bead.active {
+            background: var(--bead-active);
+            transform: scale(1.3);
+        }
+        
+        .dhikr-reminder {
+            background: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Amiri', serif;
+            color: var(--primary-color);
+            font-style: italic;
+            direction: rtl;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-selector">
+        <button class="theme-button active" data-theme="masjid-nabawi">🕌</button>
+        <button class="theme-button" data-theme="classic-masjid">💎</button>
+        <button class="theme-button" data-theme="kaaba">🕋</button>
+        <button class="theme-button" data-theme="sunset">🌅</button>
+        <button class="theme-button" data-theme="minimalist">⚪</button>
+        <button class="theme-button" data-theme="night">🌙</button>
+    </div>
+    
+    <div class="container">
+        <h1>📿 المسبحة الرقمية</h1>
+        <div class="dhikr-reminder">
+            "واذكر ربك كثيراً وسبح بالعشي والإبكار"<br>
+            <small>And remember your Lord much, and glorify Him in the evening and early morning</small>
+        </div>
+        
+        <div class="phase learn-phase" id="learnPhase">
+            <h2>الخطوة الأولى: تعلم الذكر</h2>
+            <p>اضغط على الزر أدناه وقل ذكرك بوضوح. التطبيق سيتعلمه ويحفظه للعد.</p>
+            <button id="learnBtn">🎙️ تسجيل الذكر للتعلم</button>
+            <div class="status" id="learnStatus" style="display: none;"></div>
+        </div>
+        
+        <div class="phase count-phase" id="countPhase">
+            <div class="learned-phrase">
+                <h3>الذكر المحفوظ:</h3>
+                <div class="phrase-text" id="learnedPhraseText"></div>
+            </div>
+            
+            <h2>الخطوة الثانية: ابدأ العد</h2>
+            <p>اضغط على زر الاستماع وقل ذكرك. العداد سيزيد في كل مرة تقوله!</p>
+            
+            <div class="counter" id="counter">0</div>
+            <div class="manual-counter-hint">اضغط على العداد أو اسحب للعد اليدوي</div>
+            
+            <div class="misbaha-beads" id="misbahaBeads"></div>
+            
+            <button id="listenBtn">🎧 ابدأ الاستماع</button>
+            <button id="resetBtn" class="reset-btn">🔄 إعادة تعيين وتعلم ذكر جديد</button>
+            
+            <div class="status" id="countStatus" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        class ArabicPhraseCounter {
+            constructor() {
+                this.recognition = null;
+                this.learnedPhrase = '';
+                this.count = 0;
+                this.isListening = false;
+                this.isLearning = false;
+                this.currentTheme = 'masjid-nabawi';
+                
+                this.initializeElements();
+                this.setupEventListeners();
+                this.initializeSpeechRecognition();
+                this.generateMisbahaBeads();
+                this.setupThemeSelector();
+            }
+            
+            initializeElements() {
+                this.learnBtn = document.getElementById('learnBtn');
+                this.listenBtn = document.getElementById('listenBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                this.learnPhase = document.getElementById('learnPhase');
+                this.countPhase = document.getElementById('countPhase');
+                this.learnStatus = document.getElementById('learnStatus');
+                this.countStatus = document.getElementById('countStatus');
+                this.counter = document.getElementById('counter');
+                this.learnedPhraseText = document.getElementById('learnedPhraseText');
+                this.misbahaBeads = document.getElementById('misbahaBeads');
+            }
+            
+            generateMisbahaBeads() {
+                for (let i = 0; i < 33; i++) {
+                    const bead = document.createElement('div');
+                    bead.className = 'bead';
+                    bead.id = `bead-${i}`;
+                    this.misbahaBeads.appendChild(bead);
+                }
+            }
+            
+            updateMisbahaBeads() {
+                const beads = document.querySelectorAll('.bead');
+                beads.forEach((bead, index) => {
+                    bead.classList.remove('active');
+                    if (index < (this.count % 33)) {
+                        bead.classList.add('active');
+                    }
+                });
+            }
+            
+            setupEventListeners() {
+                this.learnBtn.addEventListener('click', () => this.startLearning());
+                this.listenBtn.addEventListener('click', () => this.toggleListening());
+                this.resetBtn.addEventListener('click', () => this.reset());
+                
+                // Manual counting - click/tap
+                this.counter.addEventListener('click', () => this.manualCount());
+                
+                // Manual counting - swipe (touch devices)
+                this.setupSwipeGestures();
+            }
+            
+            setupSwipeGestures() {
+                let startY = 0;
+                let startX = 0;
+                
+                this.counter.addEventListener('touchstart', (e) => {
+                    startY = e.touches[0].clientY;
+                    startX = e.touches[0].clientX;
+                }, { passive: true });
+                
+                this.counter.addEventListener('touchend', (e) => {
+                    if (!startY || !startX) return;
+                    
+                    const endY = e.changedTouches[0].clientY;
+                    const endX = e.changedTouches[0].clientX;
+                    const diffY = startY - endY;
+                    const diffX = Math.abs(startX - endX);
+                    
+                    // Swipe up gesture (minimum 50px, more vertical than horizontal)
+                    if (diffY > 50 && diffX < 100) {
+                        this.manualCount();
+                    }
+                    
+                    startY = 0;
+                    startX = 0;
+                }, { passive: true });
+            }
+            
+            manualCount() {
+                // Only allow manual counting if we're in the counting phase
+                if (this.learnedPhrase && this.countPhase.style.display !== 'none') {
+                    this.count++;
+                    this.counter.textContent = this.count;
+                    this.updateMisbahaBeads();
+                    
+                    // Add visual feedback
+                    this.counter.classList.add('manual-count');
+                    setTimeout(() => {
+                        this.counter.classList.remove('manual-count');
+                    }, 300);
+                    
+                    // Create particle effect
+                    this.createParticleEffect();
+                    
+                    // Show success message
+                    let message = `العد اليدوي: ${this.count}`;
+                    if (this.count % 33 === 0) {
+                        message += ' - سبحان الله! تم إكمال دورة من التسبيح';
+                    } else if (this.count % 100 === 0) {
+                        message += ' - بارك الله فيك! مائة تسبيحة';
+                    }
+                    
+                    this.showStatus('success', message, 'countStatus');
+                    
+                    // Play count sound
+                    this.playCountSound();
+                }
+            }
+            
+            createParticleEffect() {
+                const counterRect = this.counter.getBoundingClientRect();
+                const centerX = counterRect.left + counterRect.width / 2;
+                const centerY = counterRect.top + counterRect.height / 2;
+                
+                // Create 8-12 particles
+                const particleCount = Math.floor(Math.random() * 5) + 8;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    // Random position around the counter
+                    const angle = (Math.PI * 2 * i) / particleCount;
+                    const radius = 30 + Math.random() * 20;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    
+                    // Random animation duration and delay
+                    const duration = 1.5 + Math.random() * 0.8;
+                    particle.style.animationDuration = duration + 's';
+                    particle.style.animationDelay = Math.random() * 0.2 + 's';
+                    
+                    document.body.appendChild(particle);
+                    
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, (duration + 0.2) * 1000);
+                }
+            }
+            
+            setupThemeSelector() {
+                const themeButtons = document.querySelectorAll('.theme-button');
+                themeButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const theme = e.target.getAttribute('data-theme');
+                        this.changeTheme(theme);
+                        
+                        // Update active button
+                        themeButtons.forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+            }
+            
+            changeTheme(theme) {
+                const body = document.body;
+                
+                // Remove all existing theme classes
+                body.classList.remove(
+                    'theme-masjid-nabawi', 
+                    'theme-classic-masjid', 
+                    'theme-kaaba', 
+                    'theme-sunset', 
+                    'theme-minimalist', 
+                    'theme-night'
+                );
+                
+                // Add new theme class
+                if (theme !== 'masjid-nabawi') {
+                    body.classList.add(`theme-${theme}`);
+                }
+                
+                this.currentTheme = theme;
+            }
+            
+            initializeSpeechRecognition() {
+                if ('webkitSpeechRecognition' in window) {
+                    this.recognition = new webkitSpeechRecognition();
+                } else if ('SpeechRecognition' in window) {
+                    this.recognition = new SpeechRecognition();
+                } else {
+                    this.showStatus('error', 'تعذر تشغيل التعرف على الكلام في هذا المتصفح', 'learnStatus');
+                    return;
+                }
+                
+                this.recognition.continuous = true;
+                this.recognition.interimResults = false;
+                this.recognition.lang = 'ar-SA';
+                
+                this.recognition.onresult = (event) => {
+                    const lastResult = event.results[event.results.length - 1];
+                    if (lastResult.isFinal) {
+                        const transcript = lastResult[0].transcript.trim();
+                        this.handleSpeechResult(transcript);
+                    }
+                };
+                
+                this.recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    const statusId = this.isLearning ? 'learnStatus' : 'countStatus';
+                    this.showStatus('error', `خطأ: ${event.error}. حاول مرة أخرى.`, statusId);
+                    this.stopListening();
+                };
+                
+                this.recognition.onend = () => {
+                    if (this.isListening && !this.isLearning) {
+                        setTimeout(() => {
+                            if (this.isListening) {
+                                this.recognition.start();
+                            }
+                        }, 100);
+                    }
+                };
+            }
+            
+            startLearning() {
+                if (!this.recognition) {
+                    this.showStatus('error', 'تعذر تشغيل التعرف على الكلام', 'learnStatus');
+                    return;
+                }
+                
+                this.isLearning = true;
+                this.learnBtn.classList.add('recording');
+                this.learnBtn.textContent = '🎙️ جاري الاستماع... قل ذكرك الآن!';
+                this.learnBtn.disabled = true;
+                
+                this.showStatus('info', 'جاري الاستماع... يرجى قول الذكر بوضوح.', 'learnStatus');
+                
+                this.recognition.start();
+            }
+            
+            toggleListening() {
+                if (this.isListening) {
+                    this.stopListening();
+                } else {
+                    this.startListening();
+                }
+            }
+            
+            startListening() {
+                if (!this.recognition) {
+                    this.showStatus('error', 'تعذر تشغيل التعرف على الكلام', 'countStatus');
+                    return;
+                }
+                
+                this.isListening = true;
+                this.listenBtn.classList.add('recording');
+                this.listenBtn.textContent = '🔴 إيقاف الاستماع';
+                
+                this.showStatus('info', 'جاري الاستماع للذكر...', 'countStatus');
+                
+                this.recognition.start();
+            }
+            
+            stopListening() {
+                this.isListening = false;
+                this.isLearning = false;
+                
+                if (this.recognition) {
+                    this.recognition.stop();
+                }
+                
+                this.learnBtn.classList.remove('recording');
+                this.listenBtn.classList.remove('recording');
+                this.learnBtn.disabled = false;
+                
+                if (this.learnedPhrase) {
+                    this.listenBtn.textContent = '🎧 ابدأ الاستماع';
+                } else {
+                    this.learnBtn.textContent = '🎙️ تسجيل الذكر للتعلم';
+                }
+            }
+            
+            handleSpeechResult(transcript) {
+                console.log('Speech result:', transcript);
+                
+                if (this.isLearning) {
+                    this.learnedPhrase = transcript;
+                    this.learnedPhraseText.textContent = transcript;
+                    
+                    this.showStatus('success', 'تم حفظ الذكر بنجاح! الحمد لله', 'learnStatus');
+                    this.stopListening();
+                    
+                    setTimeout(() => {
+                        this.learnPhase.style.display = 'none';
+                        this.countPhase.style.display = 'block';
+                    }, 1000);
+                    
+                } else if (this.isListening) {
+                    if (this.phrasesMatch(transcript, this.learnedPhrase)) {
+                        this.count++;
+                        this.counter.textContent = this.count;
+                        this.updateMisbahaBeads();
+                        
+                        let message = `العد: ${this.count}`;
+                        if (this.count % 33 === 0) {
+                            message += ' - سبحان الله! تم إكمال دورة من التسبيح';
+                        } else if (this.count % 100 === 0) {
+                            message += ' - بارك الله فيك! مائة تسبيحة';
+                        }
+                        
+                        this.showStatus('success', message, 'countStatus');
+                        
+                        this.counter.style.transform = 'scale(1.3)';
+                        setTimeout(() => {
+                            this.counter.style.transform = 'scale(1)';
+                        }, 400);
+                        
+                        // Create particle effect
+                        this.createParticleEffect();
+                        
+                        this.playCountSound();
+                        
+                    } else {
+                        this.showStatus('info', `سُمع: "${transcript}" - لم يتطابق. حاول مرة أخرى`, 'countStatus');
+                    }
+                }
+            }
+            
+            playCountSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                } catch (e) {
+                    // Audio feedback is optional
+                }
+            }
+            
+            phrasesMatch(phrase1, phrase2) {
+                const normalize = (str) => str.toLowerCase().trim().replace(/[^\w\s]/g, '');
+                return normalize(phrase1) === normalize(phrase2);
+            }
+            
+            showStatus(type, message, elementId) {
+                const statusEl = document.getElementById(elementId);
+                statusEl.textContent = message;
+                statusEl.className = `status ${type}`;
+                statusEl.style.display = 'block';
+                
+                if (type === 'success') {
+                    setTimeout(() => {
+                        statusEl.style.display = 'none';
+                    }, 3000);
+                }
+            }
+            
+            reset() {
+                this.stopListening();
+                this.learnedPhrase = '';
+                this.count = 0;
+                this.counter.textContent = '0';
+                this.learnedPhraseText.textContent = '';
+                this.updateMisbahaBeads();
+                
+                this.learnPhase.style.display = 'block';
+                this.countPhase.style.display = 'none';
+                
+                this.learnStatus.style.display = 'none';
+                this.countStatus.style.display = 'none';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            new ArabicPhraseCounter();
+        });
+    </script>
+</body>
+</html>
